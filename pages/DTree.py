@@ -13,7 +13,6 @@ df = pd.read_csv("./data/banana_quality.csv")
 st.write("ตัวอย่างข้อมูล", df.head(10))
 
 # แสดงชื่อคอลัมน์เพื่อความชัวร์
-st.write("Columns:", df.columns.tolist())
 
 # กำหนด features และ target
 # (สมมติว่า column ชื่อ 'Class' เป็น target)
