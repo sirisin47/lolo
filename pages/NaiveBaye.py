@@ -6,7 +6,7 @@ import streamlit as st
 st.title("🍌 การพยากรณ์คุณภาพกล้วยด้วย Naive Bayes")
 
 # โหลดข้อมูล Banana
-df = pd.read_csv("./data/banana_quality (1).csv")
+df = pd.read_csv("./data/banana_quality.csv")
 
 # แก้ค่าที่เป็น b'xxx' → string ปกติ
 df['Quality'] = df['Quality'].apply(lambda x: x.decode('utf-8') if isinstance(x, bytes) else x)
