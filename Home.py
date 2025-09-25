@@ -28,18 +28,18 @@ st.write("เลือกเทคนิค Machine Learning ที่คุณ�
 with st.container():
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.page_link("pages/KnnwithHeart.py", 
-                 label="การวิเคราะห์การโจมตี Phishing ด้วยเทคนิค *KNN*", 
+                 label="การประยุกต์ใช้ Machine Learning เพื่อการคัดเกรดกล้วย  ด้วยเทคนิค *KNN*", 
                  icon="🧮")
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.page_link("pages/NaiveBaye.py", 
-                 label="การวิเคราะห์การโจมตี Phishing ด้วยเทคนิค *Naive Bayes*", 
+                 label="การประยุกต์ใช้ Machine Learning เพื่อการคัดเกรดกล้วยด้วยเทคนิค *Naive Bayes*", 
                  icon="📊")
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.page_link("pages/DTree.py", 
-                 label="การวิเคราะห์การโจมตี Phishing ด้วยเทคนิค *Decision Tree*", 
+                 label="กการประยุกต์ใช้ Machine Learning เพื่อการคัดเกรดกล้วย  ด้วยเทคนิค *Decision Tree*", 
                  icon="🌳")
     st.markdown('</div>', unsafe_allow_html=True)
