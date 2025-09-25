@@ -9,7 +9,7 @@ from sklearn.metrics import accuracy_score
 st.header("Decision Tree for Banana Quality Classification")
 
 # โหลดไฟล์ที่อัปโหลดมา
-df = pd.read_csv("./data/banana_quality (1).csv")
+df = pd.read_csv("./data/banana_quality.csv")
 st.write("ตัวอย่างข้อมูล", df.head(10))
 
 # แสดงชื่อคอลัมน์เพื่อความชัวร์
@@ -19,7 +19,7 @@ st.write("Columns:", df.columns.tolist())
 # (สมมติว่า column ชื่อ 'Class' เป็น target)
 features = [col for col in df.columns if col != 'Class']
 X = df[features]
-y = df['Class']
+y = df['Quality']
 
 # Train/test split
 x_train, x_test, y_train, y_test = train_test_split(
