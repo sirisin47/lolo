@@ -17,7 +17,7 @@ st.write("Columns:", df.columns.tolist())
 
 # กำหนด features และ target
 # (สมมติว่า column ชื่อ 'Class' เป็น target)
-features = [col for col in df.columns if col != 'Class']
+features = [col for col in df.columns if col != 'Quality']
 X = df[features]
 y = df['Quality']
 
