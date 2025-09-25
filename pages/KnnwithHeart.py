@@ -5,91 +5,68 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-st.title('การทำนายข้อมูลโรคหัวใจด้วยเทคนิค K-Nearest Neighbor')
-#st.image("./img/kairung.jpg")
-col1, col2 = st.columns(2)
+st.title('การทำนายคุณภาพกล้วยด้วยเทคนิค K-Nearest Neighbor')
 
-with col1:
-   st.header("")
-   st.image("./img/heart1.jpg")
+# โหลดข้อมูล
+df = pd.read_csv("./data/banana_quality.csv")
 
-with col2:
-   st.header("")
-   st.image("./img/heart2.jpg")
+# แปลงค่า target จาก b'xxx' → string ปกติ
+df['Quality'] = df['Quality'].apply(lambda x: x.decode('utf-8') if isinstance(x, bytes) else x)
 
-
-html_7 = """
-<div style="background-color:#33beff;padding:15px;border-radius:15px 15px 15px 15px;border-style:'solid';border-color:black">
-<center><h4>ข้อมูลโรคหัวใจสำหรับทำนาย</h4></center>
-</div>
-"""
-st.markdown(html_7, unsafe_allow_html=True)
-st.markdown("")
-st.markdown("")
-
+# แสดงข้อมูล
 st.subheader("ข้อมูลส่วนแรก 10 แถว")
-dt = pd.read_csv("./data/Heart3.csv")
-st.write(dt.head(10))
+st.write(df.head(10))
 st.subheader("ข้อมูลส่วนสุดท้าย 10 แถว")
-st.write(dt.tail(10))
+st.write(df.tail(10))
 
 # สถิติพื้นฐาน
 st.subheader("📈 สถิติพื้นฐานของข้อมูล")
-st.write(dt.describe())
+st.write(df.describe())
 
-# การเลือกแสดงกราฟตามฟีเจอร์
+# ฟีเจอร์และ target
+features = ['Size', 'Weight', 'Sweetness', 'Softness', 
+            'HarvestTime', 'Ripeness', 'Acidity']
+target = 'Quality'
+
+# Visualization
 st.subheader("📌 เลือกฟีเจอร์เพื่อดูการกระจายข้อมูล")
-feature = st.selectbox("เลือกฟีเจอร์", dt.columns[:-1])
+feature = st.selectbox("เลือกฟีเจอร์", features)
 
-# วาดกราฟ boxplot
-st.write(f"### 🎯 Boxplot: {feature} แยกตามชนิดของโรคหัวใจ")
+# Boxplot
+st.write(f"### 🎯 Boxplot: {feature} แยกตามคุณภาพกล้วย")
 fig, ax = plt.subplots()
-sns.boxplot(data=dt, x='HeartDisease', y=feature, ax=ax)
+sns.boxplot(data=df, x=target, y=feature, ax=ax)
 st.pyplot(fig)
 
-# วาด pairplot
+# Pairplot
 if st.checkbox("แสดง Pairplot (ใช้เวลาประมวลผลเล็กน้อย)"):
-    st.write("### 🌺 Pairplot: การกระจายของข้อมูลทั้งหมด")
-    fig2 = sns.pairplot(dt, hue='HeartDisease')
-    st.pyplot(fig2)
+    fig2 = sns.pairplot(df, hue=target)
+    st.pyplot(fig2.fig)
 
-html_8 = """
-<div style="background-color:#6BD5DA;padding:15px;border-radius:15px 15px 15px 15px;border-style:'solid';border-color:black">
-<center><h5>ทำนายข้อมูล</h5></center>
-</div>
-"""
-st.markdown(html_8, unsafe_allow_html=True)
-st.markdown("")
+# ส่วนทำนาย
+st.subheader("🔮 ทำนายคุณภาพกล้วย")
 
-A1 = st.number_input("กรุณาเลือกข้อมูล A1")
-A2 = st.number_input("กรุณาเลือกข้อมูล A2")
-A3 = st.number_input("กรุณาเลือกข้อมูล A3")
-A4 = st.number_input("กรุณาเลือกข้อมูล A4")
-A5 = st.number_input("กรุณาเลือกข้อมูล A5")
-A6 = st.number_input("กรุณาเลือกข้อมูล A6")
-A7 = st.number_input("กรุณาเลือกข้อมูล A7")
-A8 = st.number_input("กรุณาเลือกข้อมูล A8")
-A9 = st.number_input("กรุณาเลือกข้อมูล A9")
-A10 = st.number_input("กรุณาเลือกข้อมูล A10")
-A11 = st.number_input("กรุณาเลือกข้อมูล A11")
+# Input fields อัตโนมัติ
+user_input = []
+for f in features:
+    val = st.number_input(f"กรุณาใส่ค่า {f}", value=0.0)
+    user_input.append(val)
 
 if st.button("ทำนายผล"):
-   #st.write("ทำนาย")
-   #dt = pd.read_csv("./data/iris-3.csv") 
-   X = dt.drop('HeartDisease', axis=1)
-   y = dt.HeartDisease
+    X = df[features]
+    y = df[target]
 
-   Knn_model = KNeighborsClassifier(n_neighbors=3)
-   Knn_model.fit(X, y)  
-    
-   x_input = np.array([[A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11]])
-   st.write(Knn_model.predict(x_input))
-   
-   out=Knn_model.predict(x_input)
+    Knn_model = KNeighborsClassifier(n_neighbors=3)
+    Knn_model.fit(X, y)
 
-   if out[0] == 1:
-    st.image("./img/heart1.jpg")
-   else:
-    st.image("./img/heart2.jpg")
+    x_input = np.array([user_input])
+    out = Knn_model.predict(x_input)
+
+    st.write("ผลการทำนายคุณภาพกล้วยคือ:", out[0])
+
+    if out[0] == "Good":
+        st.success("🍌 กล้วยคุณภาพดี")
+    else:
+        st.error("🍌 กล้วยคุณภาพไม่ดี")
 else:
     st.write("ไม่ทำนาย")
